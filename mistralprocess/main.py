@@ -30,5 +30,5 @@ while True:
     snr = get_noiseRatio(buffer)
     phShift = get_phaseShift(buffer, buffer, fs, bsize)
     sendMsg(oscSender, "/lgmr_freq", f0)
-    sendMsg(oscSender, "/lgmr_noise", f0)
-    sendMsg(oscSender, "/lgmr_phase", f0)
+    sendMsg(oscSender, "/lgmr_noise", snr)
+    sendMsg(oscSender, "/lgmr_phase", phShift)

@@ -1,24 +1,31 @@
-#N canvas 0 34 957 704 12;
+#N canvas 1368 33 1149 1020 12;
 #X obj 142 724 phasor~;
-#X obj 39 587 hsl 170 20 20 10000 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 39 587 hsl 170 20 20 10000 0 0 empty empty empty -2 -10 0 12
+#fcfcfc #000000 #000000 0 1;
 #X obj 142 803 *~;
 #X obj 248 873 vcf~;
 #X obj 363 947 dac~ 1 2;
-#X obj 421 780 hsl 170 20 100 5000 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
-#X obj 422 853 hsl 170 20 1 20 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 421 780 hsl 170 20 100 5000 0 0 empty empty empty -2 -10 0 12
+#fcfcfc #000000 #000000 0 1;
+#X obj 422 853 hsl 170 20 1 20 0 0 empty empty empty -2 -10 0 12 #fcfcfc
+#000000 #000000 2046 1;
 #X obj 146 909 *~;
 #X obj 249 909 *~;
-#X obj 33 736 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 33 736 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
+#000000 #000000 0 1;
 #X obj 143 873 vcf~;
 #X obj 247 725 phasor~;
-#X obj 250 588 hsl 170 20 20 10000 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 250 588 hsl 170 20 20 10000 0 0 empty empty empty -2 -10 0 12
+#fcfcfc #000000 #000000 0 1;
 #X obj 247 801 *~;
-#X obj 35 88 hsl 170 20 0.02 5 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
-#X obj 273 68 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 35 88 hsl 170 20 0.02 5 0 0 empty empty empty -2 -10 0 12 #fcfcfc
+#000000 #000000 0 1;
+#X obj 273 68 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
+#000000 #000000 0 1;
 #X obj 221 204 b;
 #X obj 418 804 sig~;
-#X floatatom 458 804 5 0 0 0 - - - 0;
-#X floatatom 140 607 5 0 0 0 - - - 0;
+#X floatatom 458 804 5 0 0 0 - - -, f 5;
+#X floatatom 140 607 5 0 0 0 - - -, f 5;
 #X obj 33 695 inlet;
 #X obj 32 31 inlet;
 #X text 521 9 Noise;
@@ -28,26 +35,28 @@
 #X obj 273 35 inlet;
 #X obj 81 58 * 10000;
 #X obj 32 56 * 16;
-#X obj 521 54 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 521 54 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
+#000000 #000000 0 1;
 #N canvas 1366 34 960 1016 bellsadd 0;
 #X obj 25 252 osc~;
-#X floatatom 25 162 5 0 0 0 - - - 0;
+#X floatatom 25 162 5 0 0 0 - - -, f 5;
 #X obj 106 252 osc~;
-#X floatatom 106 162 5 0 0 0 - - - 0;
+#X floatatom 106 162 5 0 0 0 - - -, f 5;
 #X obj 188 252 osc~;
-#X floatatom 188 162 5 0 0 0 - - - 0;
+#X floatatom 188 162 5 0 0 0 - - -, f 5;
 #X obj 276 251 osc~;
-#X floatatom 276 162 5 0 0 0 - - - 0;
+#X floatatom 276 162 5 0 0 0 - - -, f 5;
 #X obj 366 250 osc~;
-#X floatatom 366 162 5 0 0 0 - - - 0;
+#X floatatom 366 162 5 0 0 0 - - -, f 5;
 #X obj 457 252 osc~;
-#X floatatom 457 162 5 0 0 0 - - - 0;
+#X floatatom 457 162 5 0 0 0 - - -, f 5;
 #X obj 539 253 osc~;
-#X floatatom 539 162 5 0 0 0 - - - 0;
+#X floatatom 539 162 5 0 0 0 - - -, f 5;
 #X obj 630 252 osc~;
-#X floatatom 630 162 5 0 0 0 - - - 0;
+#X floatatom 630 162 5 0 0 0 - - -, f 5;
 #X obj 539 120 1000;
-#X obj 25 57 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 25 57 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
+#000000;
 #X obj 25 120 301;
 #X obj 106 120 300.5;
 #X obj 188 120 330;
@@ -134,17 +143,17 @@
 #X obj 247 673 +~;
 #X obj 142 673 +~;
 #X obj 490 573 *~;
-#X floatatom 521 548 5 0 0 0 - - - 0;
+#X floatatom 521 548 5 0 0 0 - - -, f 5;
 #X obj 159 309 *~;
 #X obj 235 310 *~;
-#X floatatom 360 247 5 0 0 0 - - - 0;
+#X floatatom 360 247 5 0 0 0 - - -, f 5;
 #X obj 325 227 expr 1 - $f1;
 #X obj 159 339 +~;
 #X obj 235 341 +~;
 #X obj 160 283 phaseSignal;
-#X floatatom 419 878 5 0 0 0 - - - 0;
+#X floatatom 419 878 5 0 0 0 - - -, f 5;
 #X obj 527 800 loadbang;
-#X floatatom 297 608 5 0 0 0 - - - 0;
+#X floatatom 297 608 5 0 0 0 - - -, f 5;
 #N canvas 1366 34 960 1016 NoiseMod 0;
 #X obj 51 15 inlet;
 #X text 50 -14 freq;
@@ -154,30 +163,30 @@
 #X text 580 -15 FM source;
 #X obj 428 15 inlet;
 #X text 424 -14 Noise Threshold;
-#X floatatom 428 40 5 0 0 0 - - - 0;
+#X floatatom 428 40 5 0 0 0 - - -, f 5;
 #X obj 410 80 >;
 #X obj 227 15 inlet;
 #X text 226 -14 f Noise;
 #X obj 131 214 expr ($f2 - $f1) * $f3 + $f1;
-#X floatatom 227 40 5 0 0 0 - - - 0;
+#X floatatom 227 40 5 0 0 0 - - -, f 5;
 #X obj 51 282 expr $f1 * (1 - $f3) + $f2 * $f3;
-#X floatatom 161 251 5 0 0 0 - - - 0;
-#X floatatom 51 307 5 0 0 0 - - - 0;
+#X floatatom 161 251 5 0 0 0 - - -, f 5;
+#X floatatom 51 307 5 0 0 0 - - -, f 5;
 #X obj 51 381 outlet;
 #X text 91 414 osc freq out;
 #X obj 84 100 b;
-#X floatatom 410 227 5 0 0 0 - - - 0;
+#X floatatom 410 227 5 0 0 0 - - -, f 5;
 #X obj 191 351 * 1.5;
 #X obj 191 381 outlet;
 #X obj 337 59 s noise;
 #X obj 497 324 r noise;
 #X obj 417 349 b;
-#X floatatom 517 349 5 0 0 0 - - - 0;
-#X floatatom 311 411 5 0 0 0 - - - 0;
+#X floatatom 517 349 5 0 0 0 - - -, f 5;
+#X floatatom 311 411 5 0 0 0 - - -, f 5;
 #X obj 311 435 outlet;
 #X text 311 468 vcf cutoff out;
-#X floatatom 51 40 5 0 0 0 - - - 0;
-#X floatatom 353 192 5 0 0 0 - - - 0;
+#X floatatom 51 40 5 0 0 0 - - -, f 5;
+#X floatatom 353 192 5 0 0 0 - - -, f 5;
 #X obj 324 110 expr $f2 * ($f1 - $f3) / (1 - $f3);
 #X obj 671 378 outlet;
 #X text 674 405 NoiseMod;
@@ -220,23 +229,25 @@
 #X obj 160 249 swap, f 11;
 #X obj 125 479 1300;
 #X obj 125 429 loadbang;
-#X obj 125 454 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 125 454 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc
+#000000 #000000;
 #X obj 215 479 0.65;
 #X obj 159 364 s~ phaseL;
 #X obj 159 769 r~ phaseL;
 #X obj 235 366 s~ phaseR;
 #X obj 265 769 r~ phaseR;
 #X obj 419 828 3.3, f 4;
-#X floatatom 653 307 5 0 0 0 - - - 0;
+#X floatatom 653 307 5 0 0 0 - - -, f 5;
 #X obj 846 282 1000;
-#X floatatom 846 307 5 0 0 0 - - - 0;
+#X floatatom 846 307 5 0 0 0 - - -, f 5;
 #X obj 653 282 250;
-#X floatatom 653 356 5 0 0 0 - - - 0;
-#X obj 745 240 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X floatatom 653 356 5 0 0 0 - - -, f 5;
+#X obj 745 240 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc
+#000000 #000000;
 #X obj 653 332 expr (ln($f2) - ln($f1))/0.5;
 #X text 632 358 B;
 #X obj 653 390 expr $f2 / (exp($f1) - 1);
-#X floatatom 653 415 5 0 0 0 - - - 0;
+#X floatatom 653 415 5 0 0 0 - - -, f 5;
 #X text 631 416 A;
 #X text 570 536 n(x) = A * (exp(B*x) - 1);
 #X obj 521 515 expr $f3 * (exp($f1 * $f2) -1);
@@ -255,11 +266,12 @@
 #X text 711 9 is On;
 #X obj 711 54 s lgmrPOn;
 #X obj 292 914 r lgmrPOn;
-#X obj 775 225 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
-#X obj 165 449 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 775 225 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
+#000000 1 1;
+#X obj 165 449 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
+#000000 1 1;
 #X obj 146 934 *~;
 #X obj 249 934 *~;
-#X obj 81 564 outlet;
 #X text 91 542 freq out;
 #X connect 0 0 2 0;
 #X connect 1 0 19 0;
@@ -315,7 +327,6 @@
 #X connect 41 1 36 0;
 #X connect 43 0 55 0;
 #X connect 45 0 1 0;
-#X connect 45 0 88 0;
 #X connect 45 1 12 0;
 #X connect 45 2 5 0;
 #X connect 46 0 41 0;
