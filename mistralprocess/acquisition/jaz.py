@@ -17,10 +17,11 @@ import numpy as np
 
 NDATA = 2048
 
-find_zero = lambda r: [i for i in range(len(r)) if r[i] == 0]
+
+def find_zero(r): return [i for i in range(len(r)) if r[i] == 0]
 
 
-class Jaz():
+class Jaz:
     """
     Spectro
     - __init__
@@ -43,26 +44,25 @@ class Jaz():
 
     """
 
-
     def __init__(self, **kwargs):
         # Thread.__init__(self)
-        
-        ip_host = kwargs['ip_host']
-        port = kwargs['port']
+
+        ip_host = kwargs["ip_host"]
+        port = kwargs["port"]
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # try:
         self.sock.connect((ip_host, port))
-        print('socket connected')
+        print("socket connected")
         # self.init_sock()
 
-        self.fmt_request_spectrum = '<' + NDATA * 'H'
+        self.fmt_request_spectrum = "<" + NDATA * "H"
 
         self._number_jaz = self._get_number_jaz()
         self.dpu_info = self._get_dpu_info()
         self.mod_info = self._get_modules_info()
         # print(self.mod_info)
         # print(self.dpu_info)
-        print(self._number_jaz)
+        # print(self._number_jaz)
 
         self.dark_level, self.sat_level, self.data_scale = self.get_all_auto_nulling()
         self.wave_axis = self.get_all_wave_axis()
@@ -97,11 +97,11 @@ class Jaz():
         Command byte value : 0xC0
         Return data : 1 byte
         """
-        s = b'\xC0'
+        s = b"\xc0"
         self.sock.send(s)
         r = self.sock.recv(1)
-        #print(f'{r[0]} spectrometers')
-        #return struct.unpack('<B', r)[0]
+        # print(f'{r[0]} spectrometers')
+        # return struct.unpack('<B', r)[0]
         return r[0]
 
     def _set_current_channel(self, channel):
@@ -110,7 +110,7 @@ class Jaz():
         Command byte value : 0xC1
         Command data : 1 byte for module index
         """
-        s = b'\xC1' + struct.pack('<B', channel)
+        s = b"\xc1" + struct.pack("<B", channel)
         self.sock.send(s)
 
     def _get_dpu_info(self):
@@ -128,23 +128,43 @@ class Jaz():
         """
 
         # Jaz DPU Module Info Slots
-        index_dpu_info = [0x01, 0x10, 0x11, 0x12, 0x13, 0x14, 0x20, 0x21, 0x24, 0x60,
-                          0x61, 0x62, 0x64, 0x65, 0x66, 0x68, 0x69, 0x6A, 0xA3, 0xB0, 0xC0]
+        index_dpu_info = [
+            0x01,
+            0x10,
+            0x11,
+            0x12,
+            0x13,
+            0x14,
+            0x20,
+            0x21,
+            0x24,
+            0x60,
+            0x61,
+            0x62,
+            0x64,
+            0x65,
+            0x66,
+            0x68,
+            0x69,
+            0x6A,
+            0xA3,
+            0xB0,
+            0xC0,
+        ]
         dpu_info = []
         for index in index_dpu_info:  # 0x11
-            s = b'\xC6' + struct.pack('<B', index)
+            s = b"\xc6" + struct.pack("<B", index)
             self.sock.send(s)
             r = self.sock.recv(17)[2:]
             dpu_info.append(r)
 
-        for index in range(1,16):
-            s = b'\xC6' + struct.pack('<B', 192+index)
+        for index in range(1, 16):
+            s = b"\xc6" + struct.pack("<B", 192 + index)
             self.sock.send(s)
             r = self.sock.recv(17)[2:]
             dpu_info.append(r)
 
         return dpu_info
-
 
     def _set_integration_time(self, channel, integration_time):
         """
@@ -153,7 +173,7 @@ class Jaz():
         Command data : 4 bytes for time in usec (LSB first up to MSB)
         """
         self._set_current_channel(channel)
-        s = b'\x02' + struct.pack('<I', int(integration_time))
+        s = b"\x02" + struct.pack("<I", int(integration_time))
         self.sock.send(s)
 
     def set_all_integration_time(self, integration_time):
@@ -171,10 +191,13 @@ class Jaz():
         Notes : Initiate a spectrum acquisition. Jaz will acquire a complete spectrum (2048 pixels values)
         """
         self._set_current_channel(channel)
-        s = b'\x09'  # get spectrum 1
+        s = b"\x09"  # get spectrum 1
         self.sock.send(s)
-        r = self.sock.recv(2*NDATA)   # short int = 2 bytes
-        data = np.array(struct.unpack(self.fmt_request_spectrum, r)) * self.data_scale[channel]
+        r = self.sock.recv(2 * NDATA)  # short int = 2 bytes
+        data = (
+            np.array(struct.unpack(self.fmt_request_spectrum, r))
+            * self.data_scale[channel]
+        )
         return data
 
     def request_all_spectrum(self):
@@ -183,7 +206,6 @@ class Jaz():
         :return:
         """
         data = []
-        print(self.number_jaz)
         for ch in range(self.number_jaz):
             data.append(self._request_spectrum(ch))
         return data
@@ -196,8 +218,8 @@ class Jaz():
         """
         mod_info = []
         self._set_current_channel(channel)
-        for i in range(17):   # 0x11
-            s = b'\x05' + struct.pack('<B', i)
+        for i in range(17):  # 0x11
+            s = b"\x05" + struct.pack("<B", i)
             self.sock.send(s)
             r = self.sock.recv(17)[2:]
             mod_info.append(r)
@@ -215,10 +237,10 @@ class Jaz():
         :return: a list of four coefficients.
         """
         wave_cal_pol = []
-        for i in range(1,5):
+        for i in range(1, 5):
             r = self.mod_info[channel][i]
             # print(f"{r=}")
-            wave_cal_pol.append(float(r[:find_zero(r)[0]]))
+            wave_cal_pol.append(float(r[: find_zero(r)[0]]))
         # print(wave_cal_pol)
         return wave_cal_pol
 
@@ -238,11 +260,13 @@ class Jaz():
         :param channel:
         :return:
         """
+
         def cal_pol(x):
             y = 0
             for i, c in enumerate(self._wave_cal_pol(channel)):
-                y += c * x ** i
+                y += c * x**i
             return y
+
         return [cal_pol(x) for x in range(NDATA)]
 
     def get_all_wave_axis(self):
@@ -255,7 +279,6 @@ class Jaz():
         for ch in range(self.number_jaz):
             wave_axis.append(self._get_wave_axis(ch))
         return wave_axis
-
 
     def get_non_lin_cal(self):
         """
@@ -270,10 +293,10 @@ class Jaz():
         Index : 0x11
         """
         self._set_current_channel(channel)
-        self.sock.send(b'\x05\x11')
+        self.sock.send(b"\x05\x11")
         r = self.sock.recv(17)
-        dark_level = int.from_bytes(r[4:6], byteorder='little')
-        sat_level = int.from_bytes(r[6:8], byteorder='little')
+        dark_level = int.from_bytes(r[4:6], byteorder="little")
+        sat_level = int.from_bytes(r[6:8], byteorder="little")
         data_scale = 65535.0 / float(sat_level)
         # print(f'ch{channel}, dark level = {dark_level}')
         # print(f'ch{channel}, sat level = {sat_level}')
@@ -291,40 +314,39 @@ class Jaz():
     def black_body_coef(self):
         pass
 
-# Fonctions ajoutées par Nathan Moureau
-    
+    # Fonctions ajoutées par Nathan Moureau
+
     def _get_mean_spectrum(self, spectrum):
         return spectrum.mean()
 
     def get_balanced_spectrum(self):
         """
-            Calibration approximative des trois sondes,
-            afin de supprimer les sauts dans le spectre.
+        Calibration approximative des trois sondes,
+        afin de supprimer les sauts dans le spectre.
         """
         unbalanced = self.request_all_spectrum()
         mean_level = [self._get_mean_spectrum(unbalanced[i]) for i in range(3)]
-        balanced = np.zeros(NDATA*3)
+        balanced = np.zeros(NDATA * 3)
         balanced[0:NDATA] = unbalanced[0] - mean_level[0]
-        balanced[NDATA:NDATA*2] = unbalanced[1] - mean_level[1]
-        balanced[NDATA*2:NDATA*3] = unbalanced[2] - mean_level[2]
+        balanced[NDATA: NDATA * 2] = unbalanced[1] - mean_level[1]
+        balanced[NDATA * 2: NDATA * 3] = unbalanced[2] - mean_level[2]
         return balanced
-
 
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
     # from pyqtgraph.Qt import QtGui, QtCore
     # import pyqtgraph as pg
-    
+
     # Init the jaz main board ip_host, port
     spc = Jaz(ip_host="147.94.187.212", port=7654)
     jaz_mod = []
     # Init all modules
-    int_time = 100000   # in usec
+    int_time = 100000  # in usec
     spc.set_all_integration_time(int_time)
     # print(spc.get_all_auto_nulling())
     dataSp = spc.request_all_spectrum()
-    
+
     balanced = spc.get_balanced_spectrum()
     plt.plot(balanced)
     plt.show()
@@ -333,22 +355,24 @@ if __name__ == "__main__":
     # win = pg.GraphicsLayoutWidget(show=True, title='')
     # pg.setConfigOptions(antialias=True)
     # p1 = win.addPlot()
-    
-    col = ['b', 'g', 'r']
+
+    col = ["b", "g", "r"]
     crv = []
     # for i in range(3):
     #     crv.append(p1.plot(pen=col[i]))
-    
+
     def update_plot():
         y = spc.request_all_spectrum()
         for i, v in enumerate(y):
             crv[i].setData(spc.wave_axis[i], v)
             # plt.plot(x[i], v)
+
     # plt.grid()
     # plt.show()
-    
+
     # timer = QtCore.QTimer()
     # timer.timeout.connect(update_plot)
     # timer.start(100)
-    
+
     # QtGui.QGuiApplication.instance().exec_()
+
