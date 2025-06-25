@@ -1,7 +1,7 @@
-from jaz.jaz_daq.jaz.res import Jaz
 from sync.sendData import *
 from process.langmuir import *
 from acquisition.niAq import *
+from acquisition.jaz import *
 from process.jazGlobal import *
 import os
 import sys
@@ -12,6 +12,7 @@ MAIN_DIR = os.path.split(SCRIPT_DIR)[0]
 
 sys.path.append(os.path.dirname(MAIN_DIR + "/"))
 
+sys.path.append(os.path.dirname(MAIN_DIR + "/jaz"))
 
 spc = Jaz(ip_host="147.94.187.212", port=7654)
 int_time = 100000
