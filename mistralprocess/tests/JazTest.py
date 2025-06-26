@@ -28,10 +28,12 @@ dispatcher = Dispatcher()
 
 
 def p1handler(address, *args):
+    global il1
     il1 = int(args[0])
 
 
 def p2handler(address, *args):
+    global il2
     il2 = int(args[0])
 
 
@@ -43,9 +45,10 @@ server = BlockingOSCUDPServer(("localhost", 57121), dispatcher)
 print("Ready.")
 
 while True:
+    # print(il1, il2)
     data = spc.get_balanced_spectrum()
     intensiteG = normalisation(data)
-    intensiteR = norminf(getIrel(data))
+    intensiteR = norminf(getIrel(data, il1, il2))
     sendMsg(sender, "/jazRel", intensiteR)
     sendMsg(sender, "/jazGlobal", intensiteG)
     sendMsg(sender, "/poke", 1)
