@@ -25,7 +25,7 @@ if __name__ == "__main__":
     while True:
         print("top")
         value += 0.1
-        sendMsg(oscSender, "/langmuir", value)
+        sendMsg(oscSender, "/indexToWl", [13, 45])
         if value >= 1:
             value = 0
         time.sleep(0.5)
