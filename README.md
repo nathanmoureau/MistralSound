@@ -2,7 +2,7 @@
 
 MistralSound est le sujet de mon stage au laboratoire Piim du campus St-Jérôme de l'université Aix-Marseille dans le cadre de ma première année de Master Acoustique & Musicologie parcours Ingéniérie et Conception Sonore.
 
-# OSC Table
+## OSC Table
 
 Messages depuis les scripts python vers les patch puredata sur le port 57120 :
 | Header | Contenu |
@@ -17,7 +17,7 @@ Messages depuis les scripts python vers les patch puredata sur le port 57120 :
 | "/iToSpc" | valeur de l'intensité des deux pixels il1 et il2 |
 | "/poke" | 1 |
 
-"/poke" permet d'obtenir une valeur pour il1 et il2 à chaque cycle d'actualisation de Jaz, sans attendre de changement de valeur. Le message déclenche un "bang" dans puredata qui programme l'envoi des messages 
+"/poke" permet d'obtenir une valeur pour il1 et il2 à chaque cycle d'actualisation de Jaz, sans attendre de changement de valeur. Le message déclenche un "bang" dans puredata qui programme l'envoi des messages "/pixel1" et "/pixel2". 
 
 Messages depuis les patchs puredata vers les scripts python sur le port 57121 :
 
