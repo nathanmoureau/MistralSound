@@ -1,7 +1,3 @@
-from process.jazRelatif import *
-from process.jazGlobal import *
-from acquisition.jaz import *
-from sync.sendData import *
 import os
 import sys
 import time
@@ -15,6 +11,11 @@ MAIN_DIR = os.path.split(SCRIPT_DIR)[0]
 
 sys.path.append(os.path.dirname(MAIN_DIR + "/"))
 
+from process.jazRelatif import *
+from process.jazGlobal import *
+from acquisition.jaz import *
+from sync.sendData import *
+
 # Connecting to Jaz
 spc = Jaz(ip_host="147.94.187.212", port=7654)
 int_time = 100000
@@ -24,7 +25,7 @@ _3wavelengths = spc.get_all_wave_axis()
 wavelengths = np.zeros(3 * NDATA)
 wavelengths[0:NDATA] = _3wavelengths[0]
 wavelengths[NDATA: NDATA * 2] = _3wavelengths[1]
-wavelengths[NDATA * 2: NDATA] = _3wavelengths[2]
+wavelengths[NDATA * 2: NDATA * 3] = _3wavelengths[2]
 
 il1 = 1000
 il2 = 1100
@@ -52,23 +53,27 @@ dispatcher.map("/pixel2", p2handler)
 server = BlockingOSCUDPServer(("localhost", 57121), dispatcher)
 
 # Setting up plot
-plt.plot(wavelengths, spectrum)
-plt.show()
+plt.ion()
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+(line1, ) = ax.plot(wavelengths, spectrum, "r-")
 
 print("Ready.")
 
 while True:
-    # print(il1, il2)
+    print(il1, il2)
     spectrum = spc.get_balanced_spectrum()
     intensiteG = normalisation(spectrum)
     intensiteR = norminf(getIrel(spectrum, il1, il2))
     sendMsg(sender, "/indexToWl", [wavelengths[il1], wavelengths[il2]])
+    sendMsg(sender, "/iToSpc", [spectrum[il1], spectrum[il2]])
     sendMsg(sender, "/jazRel", intensiteR)
     sendMsg(sender, "/jazGlobal", intensiteG)
     sendMsg(sender, "/poke", 1)
     server.handle_request()
     server.handle_request()
-    plt.set_ydata(spectrum)
-    # fig.canvas.draw()
-    # fig.canvas.flush_events()
-    time.sleep(0.5)
+    line1.set_ydata(spectrum)
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+    time.sleep(2)
