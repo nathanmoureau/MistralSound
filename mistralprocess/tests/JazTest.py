@@ -64,7 +64,7 @@ print("Ready.")
 while True:
     print(il1, il2)
     spectrum = spc.get_balanced_spectrum()
-    intensiteG = normalisation(spectrum)
+    intensiteG = get_Im(spectrum)
     intensiteR = norminf(getIrel(spectrum, il1, il2))
     sendMsg(sender, "/indexToWl", [wavelengths[il1], wavelengths[il2]])
     sendMsg(sender, "/iToSpc", [spectrum[il1], spectrum[il2]])
