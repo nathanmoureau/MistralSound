@@ -15,9 +15,13 @@ Messages depuis les scripts python vers les patch puredata sur le port 57120 :
 | "/jazRel" | rapport de l'intensité entre deux fréquences spécifiques |
 | "/indexToWl" | valeur en nm des longueurs d'ondes correspondants aux pixels il1 et il2 |
 | "/iToSpc" | valeur de l'intensité des deux pixels il1 et il2 |
+| "/nexti1" | 0 ou 1 |
+| "/nexti2" | 0 ou 1 |
 | "/poke" | 1 |
 
-"/poke" permet d'obtenir une valeur pour il1 et il2 à chaque cycle d'actualisation de Jaz, sans attendre de changement de valeur. Le message déclenche un "bang" dans puredata qui programme l'envoi des messages "/pixel1" et "/pixel2". 
+"/poke" permet d'obtenir une valeur pour il1 et il2 à chaque cycle d'actualisation de Jaz, sans attendre de changement de valeur. Le message déclenche un "bang" dans puredata qui programme l'envoi des messages "/pixel1" et "/pixel2".
+
+"/nexti1" et "/nexti2" permettent de circuler parmi les valeurs du spectre lumineux supérieures à une valeur de seuil.
 
 Messages depuis les patchs puredata vers les scripts python sur le port 57121 :
 
