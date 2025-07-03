@@ -14,7 +14,7 @@ from process.pression import *
 
 
 class NiDaqSonif():
-    def __init__(self, lgmr1_ni_port : str, lgmr2_ni_port : str, pression_ni_port : int, lgmr_samplerate : int, lgmr_buffersize : int, pression_samplerate : int, pression_buffersize : int, pd_ip_host : str, pd_writing_port : int) -> None:
+    def __init__(self, lgmr1_ni_port : str, lgmr2_ni_port : str, pression_ni_port : int, lgmr_samplerate : int, lgmr_buffersize : int, pression_samplerate : int, pression_buffersize : int, n_a : float, n_b : float, pd_ip_host : str, pd_writing_port : int) -> None:
         """
         Intended to work with National Instrument acquisition card.
         Handles probe data acquisition and communication with puredata sonification patchs.
@@ -33,6 +33,7 @@ class NiDaqSonif():
         self.snr = 0
         self.phShift = 0
         self.pression = 0
+        self.n_a, self.n_b = n_a, n_b
 
         self._oscSender = udp_client.UDPClient(pd_ip_host, pd_writing_port)
 
@@ -50,12 +51,12 @@ class NiDaqSonif():
         _raw_pression = getBuffer(self._pression_task)[0]
         self.pression = Vtomb(_raw_pression) * 1000
         self.f0 = get_f0(self._buffer1, self.lgmr_fs, self.lgmr_bsize)[0] / 10000
-        self.snr = get_noiseRatio(self._buffer1)
+        self.snr = get_noiseRatio(self._buffer1, a = self.n_a, b=self.n_b)
         self.phShift = get_phaseShift(self._buffer1, self._buffer2, self.lgmr_fs, self.lgmr_bsize)
-        sendMsg(oscSender, "/lgmr_freq", self.f0)
-        sendMsg(oscSender, "/lgmr_noise", self.snr)
-        sendMsg(oscSender, "/lgmr_phase", self.phShift)
-        sendMsg(oscSender, "/pression", self.pression)
+        sendMsg(self._oscSender, "/lgmr_freq", self.f0)
+        sendMsg(self._oscSender, "/lgmr_noise", self.snr)
+        sendMsg(self._oscSender, "/lgmr_phase", self.phShift)
+        sendMsg(self._oscSender, "/pression", self.pression)
 
     def process(self):
         print("NiDaq sonification process started.")

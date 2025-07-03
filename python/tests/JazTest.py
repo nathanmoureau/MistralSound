@@ -17,7 +17,7 @@ from acquisition.jaz import *
 from sync.sendData import *
 
 # Connecting to Jaz
-spc = Jaz(ip_host="147.94.187.212", port=7654)
+spc = Jaz(ip_host="10.16.32.4", port=7654)
 int_time = 100000
 spc.set_all_integration_time(int_time)
 

@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(MAIN_DIR + "/"))
 
 from process.jazRelatif import *
 from process.jazGlobal import *
-from acquisition.jaz import Jaz
+from acquisition.jaz import Jaz, NDATA
 from sync.sendData import *
 
 class JazSonif():
@@ -31,33 +31,84 @@ class JazSonif():
         self.isOn = False
 
         # Setting up spectrum variables
-        _3wavelengths = _spc.get_all_wave_axis()
+        _3wavelengths = self._spc.get_all_wave_axis()
         self.wavelengths = np.zeros(3 * NDATA)
         self.wavelengths[0:NDATA] = _3wavelengths[0]
         self.wavelengths[NDATA: NDATA * 2] = _3wavelengths[1]
         self.wavelengths[NDATA * 2: NDATA * 3] = _3wavelengths[2]
+        self.indeces = np.linspace(0, NDATA*3-1, NDATA*3)
+        self.peak_index_1 = 0
+        self.peak_index_2 = 0
+        self.peak_threshold = 0
 
         self.il1 = 1000
         self.il2 = 1100
-        self.spectrum = np.zeros(NDATA)
+        self.spectrum = self._spc.get_balanced_spectrum() #np.zeros(NDATA*3)
         self._intensiteG = 0
         self._intensiteR = 0
 
         # Setting up OSC Client & Server
-        self._sender = udp_client.UDPClient(pd_ip_host, pd_port)
+        self._sender = udp_client.UDPClient(pd_ip_host, pd_writing_port)
 
         self._dispatcher = Dispatcher()
         self._dispatcher.map("/pixel1", self._p1_handler)
         self._dispatcher.map("/pixel2", self._p2_handler)
+        self._dispatcher.map("/nexti1", self._next_i1)
+        self._dispatcher.map("/nexti2", self._next_i2)
+        self._dispatcher.map("/intTime", self._int_time_setter)
 
-        self._server = BlockingOSCUDPServer((pd_ip_host, pd_port), self._dispatcher)
+        self._server = BlockingOSCUDPServer((pd_ip_host, pd_listening_port), self._dispatcher)
+
+        # plt.ion()
+
+        # self.fig = plt.figure()
+        # self.ax = self.fig.add_subplot(111)
+        # (self.line1, ) = self.ax.plot(self.wavelengths, self.spectrum, "r-")
+
         print("Jaz Sonification thread ready.")
 
-    def _p1_handler(self, address, *args):
+    def _p1_handler(self, *args):
         self.il1 = int(args[0])
 
-    def _p2_handler(self, address, *args):
+    def _p2_handler(self, *args):
         self.il2 = int(args[0])
+
+    def _int_time_setter(self, *args):
+        self.int_time = int(args[0])
+
+    def _get_all_peaks(self):
+        peaks = self.spectrum >= self.peak_threshold
+        n_peaks = peaks.sum()
+        return self.indeces[peaks], n_peaks
+
+    def _get_next_peak(self, peak_index, n_peaks):
+        if peak_index >= n_peaks:
+            return 0
+        else :
+            return  peak_index + 1
+
+    def _get_previous_peak(self, peak_index, n_peaks):
+        if peak_index == 0:
+            return n_peaks-1
+        else :
+            return peak_index - 1
+
+    def _next_i1(self, *args):
+        peaks_indeces, n_peaks = self._get_all_peaks()
+        if args[0] == 1:
+            self.peak_index_1 = _get_next_peak(self.peak_index_1, n_peaks)
+        elif args[0] == 0:
+            self.peak_index_1 = _get_previous_peak(self.peak_index_1, n_peaks)
+        self.il1 = peaks_indeces[self.peak_index_1]
+
+    def _next_i2(self, *args):
+        peaks_indeces, n_peaks = self._get_all_peaks()
+        if args[0] == 1:
+            self.peak_index_2 = _get_next_peak(self.peak_index_2, n_peaks)
+        elif args[0] == 0:
+            self.peak_index_2 = _get_previous_peak(self.peak_index_2, n_peaks)
+        self.il2 = peaks_indeces[self.peak_index_2]
+
 
     def _process_step(self):
         """
@@ -67,10 +118,10 @@ class JazSonif():
         self.spectrum = self._spc.get_balanced_spectrum()
         self._intensiteG = get_Im(self.spectrum)
         self._intensiteR = norminf(getIrel(self.spectrum, self.il1, self.il2))
-        sendMsg(self._sender, "/indexToWl", [self.wavelengths[self.il1], self.wavelengths[self.il2]])
         sendMsg(self._sender, "/iToSpc", [self.spectrum[self.il1], self.spectrum[self.il2]])
         sendMsg(self._sender, "/jazRel", self._intensiteR)
         sendMsg(self._sender, "/jazGlobal", self._intensiteG)
+
 
     def start(self):
         self.isOn = True
@@ -88,5 +139,19 @@ class JazSonif():
             sendMsg(self._sender, "/poke", 1)
             self._server.handle_request()
             self._server.handle_request()
+            sendMsg(self._sender, "/indexToWl", [self.wavelengths[self.il1], self.wavelengths[self.il2]])
+            time.sleep(0.1)
 
+    def graph(self):
+        plt.ion()
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        (line1, ) = ax.plot(self.wavelengths, self.spectrum, "r-")
+        while True:
+
+            line1.set_ydata(self.spectrum)
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            time.sleep(1/ self.refreshrate)
 

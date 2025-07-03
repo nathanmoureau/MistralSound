@@ -31,12 +31,13 @@ def get_f0(buffer, fs, size, lowLimit=5):
     iMax = np.argmax(Y[lowLimit:]) + lowLimit
     fMax = freq[iMax]
     Y[iMax] = 0
-    print(Y[iMax], iMax)
+    ##print(Y[iMax], iMax)
     iM2 = np.argmax(Y[lowLimit:]) + lowLimit
     f1 = freq[iM2]
-    print(iM2)
+    #print(iM2)
     if f1 <= fMax and ( fMax%f1 <= 0.1 or (fMax%f1 <= f1 +0.1 or fMax%f1 >= f1 - 0.1)):
-        print(f"Vraie f0 = {f1}")
+        #print(f"Vraie f0 = {f1}")
+        fMax = f1
 
     return fMax, f1
 
@@ -64,6 +65,7 @@ def get_noiseRatio(buffer, nbHarm=5, a=1, b=0):
     """
     buffer : float array
     nbHarm : int
+    a, b : float
     creates an estimation of the noise signal by removing nbHarm
     harmonics from buffer signal,
     and outputs the RMS ratio between this estimation and the
@@ -115,4 +117,4 @@ if __name__ == "__main__":
     buffer = np.sin(2*np.pi*1500*t[0:1024]) + 2*np.sin(2*np.pi*3000*t[0:1024])
     B = np.abs(np.fft.rfft(buffer))
     freq = np.fft.rfftfreq(size, d = 1/fs)
-    print(get_f0(buffer, fs, size))
+    #print(get_f0(buffer, fs, size))

@@ -1,0 +1,21 @@
+[jaz]
+jaz_ip_host = "10.16.32.4"
+jaz_port = 7654
+int_time = 100000
+jaz_samplerate = 1
+
+[pd]
+pd_ip_host = "localhost"
+pd_writing_port = 57120
+pd_listening_port = 57121
+
+[probe]
+lgmr1_ni_port = "Dev1/ai0"
+lgmr2_ni_port = "Dev1/ai1"
+pression_port = "Dev1/ai2"
+lgmr_samplerate = 100000
+pression_samplerate = 1
+lgmr_bsize = 1024
+pression_bsize = 2
+noise_a = 1 # Coefficients de calibration du niveau de bruit :
+noise_b = 0 # calibrated_noise = noise_a * raw_noise + noise_b
