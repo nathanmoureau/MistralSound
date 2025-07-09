@@ -56,6 +56,7 @@ class JazSonif():
         self._dispatcher.map("/nexti1", self._next_i1)
         self._dispatcher.map("/nexti2", self._next_i2)
         self._dispatcher.map("/intTime", self._int_time_setter)
+        self._dispatcher.map("/peakThrshld", self._set_threshold)
 
         self._server = BlockingOSCUDPServer((pd_ip_host, pd_listening_port), self._dispatcher)
 
@@ -74,7 +75,14 @@ class JazSonif():
         self.il2 = int(args[0])
 
     def _int_time_setter(self, *args):
-        self.int_time = int(args[0])
+        new_int_time = int(args[0])
+        if new_int_time != self.int_time:
+            self.int_time = new_int_time
+            self._spc.set_all_integration_time(self.int_time)
+
+
+    def _set_threshold(self, *args):
+        self.peak_threshold = float(*args[0])
 
     def _get_all_peaks(self):
         peaks = self.spectrum >= self.peak_threshold
@@ -96,17 +104,17 @@ class JazSonif():
     def _next_i1(self, *args):
         peaks_indeces, n_peaks = self._get_all_peaks()
         if args[0] == 1:
-            self.peak_index_1 = _get_next_peak(self.peak_index_1, n_peaks)
+            self.peak_index_1 = self._get_next_peak(self.peak_index_1, n_peaks)
         elif args[0] == 0:
-            self.peak_index_1 = _get_previous_peak(self.peak_index_1, n_peaks)
+            self.peak_index_1 = self._get_previous_peak(self.peak_index_1, n_peaks)
         self.il1 = peaks_indeces[self.peak_index_1]
 
     def _next_i2(self, *args):
         peaks_indeces, n_peaks = self._get_all_peaks()
         if args[0] == 1:
-            self.peak_index_2 = _get_next_peak(self.peak_index_2, n_peaks)
+            self.peak_index_2 = self._get_next_peak(self.peak_index_2, n_peaks)
         elif args[0] == 0:
-            self.peak_index_2 = _get_previous_peak(self.peak_index_2, n_peaks)
+            self.peak_index_2 = self._get_previous_peak(self.peak_index_2, n_peaks)
         self.il2 = peaks_indeces[self.peak_index_2]
 
 
@@ -137,6 +145,8 @@ class JazSonif():
     def pixel_input(self):
         while self.isOn :
             sendMsg(self._sender, "/poke", 1)
+            self._server.handle_request()
+            self._server.handle_request()
             self._server.handle_request()
             self._server.handle_request()
             sendMsg(self._sender, "/indexToWl", [self.wavelengths[self.il1], self.wavelengths[self.il2]])

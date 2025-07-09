@@ -1,20 +1,15 @@
-#N canvas 1368 33 1916 1020 12;
-#X obj 1320 350 vsl 20 200 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 9000 1;
+#N canvas 1368 33 1916 1015 12;
+#X obj 1320 350 vsl 20 200 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
 #X msg 139 39 listen 57120;
 #X obj 139 111 oscparse;
 #X obj 139 76 netreceive -u -b;
 #X obj 139 670 list trim;
 #X obj 393 734 route lgmr_freq;
 #X obj 522 734 route lgmr_noise;
-#X obj 520 865 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 14500 1;
-#X obj 500 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 0 1;
-#X obj 391 865 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 9050 1;
-#X obj 191 905 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 0 1;
+#X obj 520 865 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 500 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 391 865 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 191 905 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
 #N canvas 1254 5 670 1020 pression 0;
 #X obj 166 81 inlet;
 #X text 164 51 Valeur visée;
@@ -32,8 +27,7 @@
 #X obj 166 712 outlet~;
 #X obj 166 519 *~;
 #X obj 274 460 expr~ $v1 > 0.5;
-#X obj 428 93 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc
-#000000 #000000;
+#X obj 428 93 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
 #X obj 166 544 *~;
 #X obj 272 487 expr~ $v1;
 #X obj 165 394 *~;
@@ -48,11 +42,11 @@
 #X obj 41 621 inlet;
 #X obj 166 659 *~;
 #X text 40 590 Volume;
-#X floatatom 286 137 5 0 0 0 - - -, f 5;
-#X floatatom 85 152 5 0 0 0 - - -, f 5;
+#X floatatom 286 137 5 0 0 0 - - - 0;
+#X floatatom 85 152 5 0 0 0 - - - 0;
 #X obj 165 120 +;
 #X obj 185 154 -;
-#X floatatom 85 260 5 0 0 0 - - -, f 5;
+#X floatatom 85 260 5 0 0 0 - - - 0;
 #X obj 238 77 b;
 #X connect 0 0 33 0;
 #X connect 0 0 34 0;
@@ -93,44 +87,32 @@
 #X connect 36 0 34 0;
 #X restore 161 1165 pd pression;
 #X obj 402 353 0.5;
-#X obj 360 480 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc
-#000000 #000000;
+#X obj 360 480 bng 20 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
 #X obj 411 408 0.1;
-#X obj 191 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
-#000000 0 1;
+#X obj 191 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
 #X obj 658 734 route lgmr_phase;
-#X obj 651 858 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 3800 1;
-#X floatatom 656 1043 5 0 0 0 - - -, f 5;
+#X obj 651 858 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X floatatom 656 1043 5 0 0 0 - - - 0;
 #X obj 590 1240 LangmuirPhaseSignal;
 #X obj 258 734 loadbang;
-#X obj 491 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
-#000000 0 1;
+#X obj 491 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
 #X obj 760 1240 Jaz, f 14;
-#X obj 681 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
-#000000 0 1;
-#X obj 790 870 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 6300 1;
-#X obj 910 870 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 0 1;
-#X obj 771 532 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
-#000000 0 1;
-#X obj 431 825 tgl 30 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
-#000000 1 1;
+#X obj 631 530 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 790 870 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 910 870 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 721 532 tgl 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 431 825 tgl 30 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000 0 1;
 #X obj 880 1240 jazRelSeq;
-#X obj 690 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 16900 1;
-#X obj 780 301 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 0 1;
+#X obj 640 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 730 301 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
 #X text 420 230 ---- SONDE DE LANGMUIR ----;
 #X obj 410 1090 expr $f1 * 0.1 * $f2 + $f1 * (1-$f2), f 7;
 #X obj 459 865 b;
-#X floatatom 391 1043 8 0 0 0 - - -, f 8;
+#X floatatom 391 1043 8 0 0 0 - - - 0;
 #X obj 139 730 route pression;
 #N canvas 1368 33 670 1020 output 0;
 #X obj 210 190 inlet;
-#X obj 210 219 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 5744 1;
+#X obj 210 219 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 300 380 *~;
 #X obj 319 182 inlet~;
 #X obj 419 181 inlet~;
@@ -144,8 +126,7 @@
 #X connect 4 0 5 1;
 #X connect 5 0 6 1;
 #X restore 320 1350 pd output;
-#X obj 200 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc
-#000000 #000000 0 1;
+#X obj 200 300 vsl 20 170 0 1 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
 #X text 190 230 ---- SONDE de PRESSION ----;
 #X text 190 480 Volume;
 #X text 181 1085 pression;
@@ -153,23 +134,20 @@
 #X text 300 440 marge;
 #X text 266 480 actualiser;
 #X text 490 480 Volume;
-#X text 680 479 Volume;
-#X text 770 481 Volume;
-#X text 680 269 Global;
-#X text 770 270 Relatif;
+#X text 630 479 Volume;
+#X text 720 481 Volume;
+#X text 630 269 Global;
+#X text 720 270 Relatif;
 #X text 650 230 -------------- SPECTRO JAZ ---------------;
 #X obj 430 800 loadbang;
 #X obj 790 735 route jazGlobal;
 #X obj 910 735 route jazRel;
-#X obj 1024 303 hsl 170 20 0 6143 0 0 empty empty empty -2 -10 0 12
-#fcfcfc #000000 #000000 0 1;
-#X obj 1023 368 hsl 170 20 0 6143 0 0 empty empty empty -2 -10 0 12
-#fcfcfc #000000 #000000 0 1;
+#X obj 1024 303 hsl 170 20 0 6143 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
+#X obj 1023 368 hsl 170 20 0 6143 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
 #X text 1060 270 pixel 1;
 #X text 1060 346 pixel 2;
 #X obj 1175 1184 netsend -u -b;
-#X obj 1310 220 bng 45 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 1310 220 bng 45 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 1310 200 connect;
 #X msg 1460 520 connect localhost 57121;
 #X obj 1175 1054 oscformat pixel1;
@@ -177,17 +155,17 @@
 #X obj 1175 1144 list trim;
 #X obj 1355 1054 oscformat pixel2;
 #X obj 1200 1010 f;
-#X obj 1500 730 route poke;
-#X obj 1500 755 b;
+#X obj 1469 578 route poke;
+#X obj 1469 603 b;
 #X obj 1367 1017 f;
-#X floatatom 360 400 5 0 0 0 - - -, f 5;
-#X floatatom 360 437 5 0 0 0 - - -, f 5;
+#X floatatom 360 400 5 0 0 0 - - - 0;
+#X floatatom 360 437 5 0 0 0 - - - 0;
 #X obj 390 320 loadbang;
-#X floatatom 1200 303 5 0 0 0 - - -, f 5;
-#X floatatom 1200 369 5 0 0 0 - - -, f 5;
-#X obj 1591 730 route indexToWl;
-#X obj 1589 794 unpack f f;
-#X obj 1591 755 print;
+#X floatatom 1200 303 5 0 0 0 - - - 0;
+#X floatatom 1200 369 5 0 0 0 - - - 0;
+#X obj 1560 578 route indexToWl;
+#X obj 1558 642 unpack f f;
+#X obj 1560 603 print;
 #N canvas 2 33 953 703 smoothValue 0;
 #X obj 218 105 inlet;
 #X msg 218 130 \$1 100;
@@ -242,37 +220,31 @@
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X restore 245 1111 pd smoothValue;
-#X floatatom 910 1154 5 0 0 0 - - -, f 5;
+#X floatatom 910 1154 5 0 0 0 - - - 0;
 #X msg 1043 76 disconnect;
 #X obj 979 1084 > 0;
 #X obj 910 1090 *;
-#X floatatom 520 1043 5 0 0 0 - - -, f 5;
-#X floatatom 1198 330 5 0 0 0 - - -, f 5;
-#X floatatom 1202 399 5 0 0 0 - - -, f 5;
-#X obj 1717 730 route iToSpc;
-#X obj 1717 797 unpack f f;
-#X floatatom 330 1060 5 0 0 0 - - -, f 5;
-#X obj 1500 779 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc
-#000000 #000000;
-#X obj 1717 754 b;
-#X obj 880 300 vsl 20 170 10000 1e+06 1 0 empty empty empty 0 -9 0
-10 #fcfcfc #000000 #000000 8050 1;
-#X text 840 480 Integration Time;
+#X floatatom 520 1043 5 0 0 0 - - - 0;
+#X floatatom 1198 330 5 0 0 0 - - - 0;
+#X floatatom 1202 399 5 0 0 0 - - - 0;
+#X obj 1686 578 route iToSpc;
+#X obj 1686 645 unpack f f;
+#X floatatom 330 1060 5 0 0 0 - - - 0;
+#X obj 1469 627 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 1686 602 b;
+#X obj 830 300 vsl 20 170 10000 1e+06 1 0 empty empty empty 0 -9 0 10 #fcfcfc #000000 #000000 0 1;
+#X text 790 480 Integration Time;
 #X text 1290 570 Main Volume;
 #X obj 1050 740 f;
 #X obj 1050 800 oscformat intTime;
-#X floatatom 860 500 9 0 0 0 - - -, f 9;
-#X obj 980 300 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 1250 300 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X floatatom 810 500 9 0 0 0 - - - 0;
+#X obj 980 300 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 1250 300 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 987 302 <;
 #X text 1258 302 >;
-#X obj 1252 368 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 1252 368 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 1260 370 >;
-#X obj 982 368 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 982 368 bng 25 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 990 370 <;
 #X obj 1190 800 oscformat nexti1;
 #X obj 980 334 0;
@@ -280,6 +252,11 @@
 #X obj 1320 800 oscformat nexti2;
 #X obj 982 402 0;
 #X obj 1252 402 1;
+#X obj 930 300 vsl 20 170 0 127 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
+#X text 913 481 Peak Threshold;
+#X floatatom 930 500 8 0 0 0 - - - 0;
+#X obj 1490 799 oscformat peakThrshld;
+#X obj 1469 724 f;
 #X connect 0 0 36 0;
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
@@ -354,6 +331,8 @@
 #X connect 67 0 65 0;
 #X connect 67 0 93 0;
 #X connect 67 0 54 0;
+#X connect 67 0 115 0;
+#X connect 67 0 95 0;
 #X connect 68 0 64 0;
 #X connect 69 0 11 2;
 #X connect 70 0 11 4;
@@ -393,4 +372,8 @@
 #X connect 112 0 62 0;
 #X connect 113 0 112 0;
 #X connect 114 0 112 0;
+#X connect 115 0 117 0;
+#X connect 115 0 119 0;
+#X connect 118 0 62 0;
+#X connect 119 0 118 0;
 #X coords 0 -1 1 1 1268 431 1 135 191;
