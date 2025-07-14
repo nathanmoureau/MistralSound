@@ -69,20 +69,22 @@ class JazSonif():
         print("Jaz Sonification thread ready.")
 
     def _p1_handler(self, *args):
-        self.il1 = int(args[0])
+        # print(args)
+        self.il1 = int(args[1])
 
     def _p2_handler(self, *args):
-        self.il2 = int(args[0])
+        self.il2 = int(args[1])
 
     def _int_time_setter(self, *args):
-        new_int_time = int(args[0])
+        # print(args)
+        new_int_time = int(args[1])
         if new_int_time != self.int_time:
             self.int_time = new_int_time
             self._spc.set_all_integration_time(self.int_time)
 
 
     def _set_threshold(self, *args):
-        self.peak_threshold = float(*args[0])
+        self.peak_threshold = float(args[1])
 
     def _get_all_peaks(self):
         peaks = self.spectrum >= self.peak_threshold
@@ -103,19 +105,27 @@ class JazSonif():
 
     def _next_i1(self, *args):
         peaks_indeces, n_peaks = self._get_all_peaks()
-        if args[0] == 1:
+        # print(peaks_indeces, n_peaks, self.peak_index_1)
+        if args[1] == 1:
+            print(1)
+            # print(peaks_indeces)
             self.peak_index_1 = self._get_next_peak(self.peak_index_1, n_peaks)
-        elif args[0] == 0:
+        elif args[1] == 0:
+            print(0)
             self.peak_index_1 = self._get_previous_peak(self.peak_index_1, n_peaks)
-        self.il1 = peaks_indeces[self.peak_index_1]
+        
+        self.il1 = int(peaks_indeces[self.peak_index_1])
+        print(self.il1)
+        sendMsg(self._sender, "/newPixel1", self.il1)
 
     def _next_i2(self, *args):
         peaks_indeces, n_peaks = self._get_all_peaks()
-        if args[0] == 1:
+        if args[1] == 1:
             self.peak_index_2 = self._get_next_peak(self.peak_index_2, n_peaks)
-        elif args[0] == 0:
+        elif args[1] == 0:
             self.peak_index_2 = self._get_previous_peak(self.peak_index_2, n_peaks)
-        self.il2 = peaks_indeces[self.peak_index_2]
+        self.il2 = int(peaks_indeces[self.peak_index_2])
+        sendMsg(self._sender, "/newPixel2", self.il2)
 
 
     def _process_step(self):
@@ -154,13 +164,23 @@ class JazSonif():
 
     def graph(self):
         plt.ion()
-
+        px1 = np.ones(NDATA*3)
+        px2 = np.ones(NDATA*3)
+        y = np.linspace(0, 5000, NDATA*3)
+        xthrshld = np.linspace(350, 950, NDATA*3)
+        ythrshld = np.ones(NDATA*3)
         fig = plt.figure()
         ax = fig.add_subplot(111)
+        ax.set_xlim([350, 1000])
         (line1, ) = ax.plot(self.wavelengths, self.spectrum, "r-")
-        while True:
-
+        (lpx1, ) = ax.plot(self.il1 * px1, y, 'b+')
+        (lpx2, ) = ax.plot(self.il2 * px2, y, 'g+')
+        (thrshld, ) = ax.plot(xthrshld, ythrshld * self.peak_threshold, 'y*')
+        while self.isOn:
+            lpx1.set_xdata(self.wavelengths[self.il1] * px1)
+            lpx2.set_xdata(self.wavelengths[self.il2] * px2)
             line1.set_ydata(self.spectrum)
+            thrshld.set_ydata(self.peak_threshold * ythrshld)
             fig.canvas.draw()
             fig.canvas.flush_events()
             time.sleep(1/ self.refreshrate)

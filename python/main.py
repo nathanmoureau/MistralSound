@@ -4,10 +4,10 @@ import threading
 import matplotlib.pyplot as plt
 import time
 import tomllib
-
-
+import os
+print(os.path.realpath(__file__))
 # Importing Settings from configuration.toml
-with open("configuration.toml", mode="rb") as f:
+with open("python/configuration.toml", mode="rb") as f:
     config = tomllib.load(f)
 
 
