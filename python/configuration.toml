@@ -10,9 +10,9 @@ pd_writing_port = 57120
 pd_listening_port = 57121
 
 [probe]
-lgmr1_ni_port = "Dev1/ai0"
-lgmr2_ni_port = "Dev1/ai1"
-pression_port = "Dev1/ai2"
+lgmr1_ni_port = "Dev1/ai0" # port de la première sonde de Langmuir sur la carte d'acquisition
+lgmr2_ni_port = "Dev1/ai1" # port de la seconde sonde de Langmuir sur la carte d'acquisition
+pression_port = "Dev1/ai2" # port de la sonde de pression sur la carte d'acquisition
 lgmr_samplerate = 100000
 pression_samplerate = 1
 lgmr_bsize = 1024
