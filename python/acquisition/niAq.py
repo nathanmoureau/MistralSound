@@ -3,6 +3,9 @@ from nidaqmx.constants import AcquisitionType, READ_ALL_AVAILABLE
 
 
 def configAq(deviceName, fe, bsize, sample_mode=AcquisitionType.FINITE):
+    """
+    Configures a given device.
+    """
     task = nidaqmx.Task()
     task.ai_channels.add_ai_voltage_chan(deviceName)
     task.timing.cfg_samp_clk_timing(

@@ -19,5 +19,8 @@ def getIrel(Intensite, i1, i2):
 
 
 def norminf(x: float) -> float:
+    """
+    fonction de normalisation : [0; +inf] -> [0; 1]
+    """
     v = 1 - np.exp(-x)
     return v * (v >= 0)

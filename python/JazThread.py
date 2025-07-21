@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(MAIN_DIR + "/"))
 
 from process.jazRelatif import *
 from process.jazGlobal import *
-from acquisition.jaz import Jaz, NDATA
+from acquisition.jazAq import Jaz, NDATA
 from sync.sendData import *
 
 class JazSonif():
@@ -22,7 +22,7 @@ class JazSonif():
         Wrapper for Didier Guyomarc'h's driver class for Jaz spectrometer.
         Handles Jaz data processing and communication with puredata sonification patchs.
         """
-        # Connecting to Jaz
+        # Connect to Jaz
         self._spc = Jaz(ip_host=jaz_ip_host, port=jaz_port)
         self.int_time = int_time
         self._spc.set_all_integration_time(int_time)
@@ -30,7 +30,7 @@ class JazSonif():
         self.refreshrate = samplerate
         self.isOn = False
 
-        # Setting up spectrum variables
+        # Set up spectrum variables
         _3wavelengths = self._spc.get_all_wave_axis()
         self.wavelengths = np.zeros(3 * NDATA)
         self.wavelengths[0:NDATA] = _3wavelengths[0]
@@ -47,7 +47,7 @@ class JazSonif():
         self._intensiteG = 0
         self._intensiteR = 0
 
-        # Setting up OSC Client & Server
+        # Set up OSC Client & Server
         self._sender = udp_client.UDPClient(pd_ip_host, pd_writing_port)
 
         self._dispatcher = Dispatcher()
@@ -60,12 +60,6 @@ class JazSonif():
 
         self._server = BlockingOSCUDPServer((pd_ip_host, pd_listening_port), self._dispatcher)
 
-        # plt.ion()
-
-        # self.fig = plt.figure()
-        # self.ax = self.fig.add_subplot(111)
-        # (self.line1, ) = self.ax.plot(self.wavelengths, self.spectrum, "r-")
-
         print("Jaz Sonification thread ready.")
 
     def _p1_handler(self, *args):
@@ -76,6 +70,9 @@ class JazSonif():
         self.il2 = int(args[1])
 
     def _int_time_setter(self, *args):
+        """
+        Sets spectrometer integration time.
+        """
         # print(args)
         new_int_time = int(args[1])
         if new_int_time != self.int_time:
@@ -113,7 +110,7 @@ class JazSonif():
         elif args[1] == 0:
             print(0)
             self.peak_index_1 = self._get_previous_peak(self.peak_index_1, n_peaks)
-        
+
         self.il1 = int(peaks_indeces[self.peak_index_1])
         print(self.il1)
         sendMsg(self._sender, "/newPixel1", self.il1)
@@ -130,7 +127,7 @@ class JazSonif():
 
     def _process_step(self):
         """
-        Get new data from Jaz, computes new parameters and send them to puredata.
+        Gets new data from Jaz, computes new parameters and send them to puredata.
         """
         print(self.il1, self.il2)
         self.spectrum = self._spc.get_balanced_spectrum()
@@ -153,6 +150,9 @@ class JazSonif():
         print("Jaz Sonification process stopped.")
 
     def pixel_input(self):
+        """
+        Sends a "/poke" message and waits for 4 messages : /pixel1, /pixel2, /intTime & /peakThrshld
+        """
         while self.isOn :
             sendMsg(self._sender, "/poke", 1)
             self._server.handle_request()
@@ -163,6 +163,9 @@ class JazSonif():
             time.sleep(0.1)
 
     def graph(self):
+        """
+        Plots spectrometer data.
+        """
         plt.ion()
         px1 = np.ones(NDATA*3)
         px2 = np.ones(NDATA*3)

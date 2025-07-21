@@ -1,42 +1,29 @@
 import numpy as np
 import scipy.signal as sig
 
-"""
-    TO DO : améliorer get_f0 pour qu'il soit retourne toujours
-    la frequence fondamentale et pas une harmonique.
-"""
-def _get_peak(Y, freq,lowLimit, peak):
-    Y[peak] = 0
-    fp = freq[peak]
-    newPeak = np.argmax(Y[lowLimit:peak]) + lowLimit
-    fnp = freq[newPeak]
-    if fnp <= fp :
-        pass
-    return
-
-
 
 def get_f0(buffer, fs, size, lowLimit=5):
     """
     buffer : float array
     fs : float (sample rate)
     size : int (buffer size)
-    Estimates fundamental frequency.
+    Estimates fundamental frequency, works if the fundamental frequency is one of the two greatest peaks in FFT.
     Filters out frequencies bellow lowLimit/(size*1/fs).
     """
     Y = np.abs(np.fft.rfft(buffer))
-
     freq = np.fft.rfftfreq(size, d=1 / fs)
 
+    # Get the frequency of the greatest peak in FFT
     iMax = np.argmax(Y[lowLimit:]) + lowLimit
     fMax = freq[iMax]
+
+    # Get the frequency of the second greatest peak
     Y[iMax] = 0
-    ##print(Y[iMax], iMax)
     iM2 = np.argmax(Y[lowLimit:]) + lowLimit
     f1 = freq[iM2]
-    #print(iM2)
+
+    # If first peak is a multiple of the second, outputs second
     if f1 <= fMax and ( fMax%f1 <= 0.1 or (fMax%f1 <= f1 +0.1 or fMax%f1 >= f1 - 0.1)):
-        #print(f"Vraie f0 = {f1}")
         fMax = f1
 
     return fMax, f1

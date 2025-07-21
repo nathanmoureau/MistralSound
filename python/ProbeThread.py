@@ -46,13 +46,20 @@ class NiDaqSonif():
         self.process()
 
     def _process_step(self):
+        # Update lgmr buffers
         self._buffer1[:] = getBuffer(self._lgmr_task1)
         self._buffer2[:] = getBuffer(self._lgmr_task2)
+
+        # Get pressure
         _raw_pression = getBuffer(self._pression_task)[0]
         self.pression = Vtomb(_raw_pression) * 1000
+
+        # Compute parameters
         self.f0 = get_f0(self._buffer1, self.lgmr_fs, self.lgmr_bsize)[0] / 10000
         self.snr = get_noiseRatio(self._buffer1, a = self.n_a, b=self.n_b)
         self.phShift = get_phaseShift(self._buffer1, self._buffer2, self.lgmr_fs, self.lgmr_bsize)
+
+        # Send parameters
         sendMsg(self._oscSender, "/lgmr_freq", self.f0)
         sendMsg(self._oscSender, "/lgmr_noise", self.snr)
         sendMsg(self._oscSender, "/lgmr_phase", self.phShift)

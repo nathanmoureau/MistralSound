@@ -15,7 +15,6 @@ def get_Im(Intensite, n=True, afficherIm=False, seuil=0.1):
         else:
             Intensite = np.zeros_like(Intensite)
 
-    # Im = np.mean(concatenated_intensite)
     Im = np.true_divide(Intensite.sum(), (Intensite >= seuil).sum())
 
     if afficherIm:

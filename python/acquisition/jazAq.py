@@ -8,6 +8,8 @@ See documentation "Jaz OEM Data Sheet.pdf"
 TODO: read spectrum in different threads
 TODO: electrical dark correction
 
+Nathan MOUREAU - 21/07/2025
+Added approximative calibration
 """
 
 import socket
